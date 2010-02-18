@@ -5,4 +5,5 @@
  * @author Adrian Lang <lang@cosmocode.de>
  */
 
-$conf['logpage']    = 'log';
+$conf['logpage'] = 'log';
+$conf['userpage']  = '';

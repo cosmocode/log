@@ -69,11 +69,17 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
             $str = array($log_text, '  *', '');
         }
         list($pre, $lstart, $post) = $str;
-        $log_text = $pre . $lstart . strftime('%Y-%m-%d %R ') . '//'
-                  . (isset($_SERVER['REMOTE_USER']) ?
-                     $USERINFO['name'] :
-                     clientIP(true)) . '//: '
-                  . $text . $lstart . $post;
+        $log_text = $pre . $lstart . strftime('%Y-%m-%d %R ');
+        if (!isset($_SERVER['REMOTE_USER'])) {
+            $log_text .= '//' . clientIP(true) . '//';
+        } else {
+            if ($this->getConf('userns') !== '') {
+                $log_text .= '[[' . sprintf($this->getConf('userpage'), $USERINFO['name']) . '|' . $USERINFO['name'] . ']]';
+            } else {
+                $log_text .= '//' . $USERINFO['name'] . '//';
+            }
+        }
+        $log_text .= ': ' . $text . $lstart . $post;
         saveWikiText($log_id, $log_text, $this->getLang('summary'));
     }
 }
