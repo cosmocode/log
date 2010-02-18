@@ -67,7 +67,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
                 break;
             case 'listu_close': case 'listo_close':
                 if (--$lvl === 0) {
-                    $instructions = array_slice($instructions, $start, $i - $start + 1);
+                    $instructions = array_slice($instructions, $start, $i - $start);
                     break 2;
                 }
             }

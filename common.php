@@ -19,7 +19,7 @@ function log_get_log_page($plugin, $id) {
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
             throw new Exception($plugin->getLang('e_not_writable'));
         }
-        saveWikiText($logpage, "====== $id log =======", $plugin->getLang('created_summary'));
+        saveWikiText($logpage, "====== $id log ======", $plugin->getLang('created_summary'));
     }
     return $logpage;
 }
