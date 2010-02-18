@@ -60,6 +60,9 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
         }
         $text = $_POST['log_text'];
         $log_id = log_get_log_page($this, $ID);
+        if (auth_quickaclcheck($log_id) < AUTH_EDIT) {
+            msg($this->getLang('e_not_writable'), -1);
+        }
         $log_text = rawWiki($log_id);
         $str = preg_split('/(\n {2,}[-*] *)/', $log_text, 2, PREG_SPLIT_DELIM_CAPTURE);
         if ($str === false) {

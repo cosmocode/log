@@ -16,7 +16,10 @@ if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 function log_get_log_page($plugin, $id) {
     $logpage = curNS($id) . ':' . $plugin->getConf('logpage');
     if (!page_exists($logpage)) {
-        return $this->getLang('e_nolog');
+        if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
+            throw new Exception($this->getLang('e_not_writable'));
+        }
+        saveWikiText($logpage, "====== $id log =======", $this->getLang('created_summary'));
     }
     return $logpage;
 }

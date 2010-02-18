@@ -23,7 +23,6 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         return 55;
     }
 
-
     function connectTo($mode) {
         $this->Lexer->addSpecialPattern('{{log(?:>[^}]+)?}}',$mode,'plugin_log');
     }
@@ -36,7 +35,11 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         }
         $maxcount = count($match) > 1 ? $match[1] : 5;
 
-        $logpage = log_get_log_page($this, $ID);
+        try {
+            $logpage = log_get_log_page($this, $ID);
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
 
         $instructions = p_cached_instructions(wikiFN($logpage),false,$logpage);
 
