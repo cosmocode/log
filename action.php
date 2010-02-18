@@ -66,7 +66,7 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
         $log_text = rawWiki($log_id);
         $str = preg_split('/(\n {2,}[-*] *)/', $log_text, 2, PREG_SPLIT_DELIM_CAPTURE);
         if ($str === false) {
-            $str = array($log_text, '  *', '');
+            $str = array($log_text, "\n  *", '');
         }
         list($pre, $lstart, $post) = $str;
         $log_text = $pre . $lstart . strftime('%Y-%m-%d %R ');
