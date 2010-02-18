@@ -6,9 +6,10 @@
  */
 
 $lang['e_not_writable']  = 'Keine ausreichenden Rechte um Logseite anzulegen oder zu bearbeiten';
-$lang['e_nolog']  = 'No log page found';
-$lang['e_syntax'] = 'Invalid syntax';
+$lang['e_syntax'] = 'Ungültige Syntax';
 
-$lang['save'] = 'Save';
+$lang['save'] = 'Speichern';
 $lang['newentry'] = 'Neuer Eintrag:';
 $lang['fulllog'] = 'Vollständiges Log anzeigen';
+$lang['summary'] = 'Neuer Logeintrag';
+$lang['created_summary'] = 'Neues Log angelegt';
