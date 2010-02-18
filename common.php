@@ -17,9 +17,9 @@ function log_get_log_page($plugin, $id) {
     $logpage = curNS($id) . ':' . $plugin->getConf('logpage');
     if (!page_exists($logpage)) {
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
-            throw new Exception($this->getLang('e_not_writable'));
+            throw new Exception($plugin->getLang('e_not_writable'));
         }
-        saveWikiText($logpage, "====== $id log =======", $this->getLang('created_summary'));
+        saveWikiText($logpage, "====== $id log =======", $plugin->getLang('created_summary'));
     }
     return $logpage;
 }
