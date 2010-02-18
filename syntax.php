@@ -74,6 +74,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         }
         if ($start === -1) {
             $type = 'u';
+            $instructions = array();
         }
 
         return array(array_merge($instructions,
