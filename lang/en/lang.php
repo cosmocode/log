@@ -12,3 +12,5 @@ $lang['e_syntax'] = 'Invalid syntax';
 $lang['save'] = 'Save';
 $lang['newentry'] = 'New entry:';
 $lang['fulllog'] = 'Show full log';
+$lang['summary'] = 'New log entry';
+$lang['created_summary'] = 'New log created';
