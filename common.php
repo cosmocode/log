@@ -14,7 +14,7 @@ if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
 function log_get_log_page($plugin, $id) {
-    $logpage = curNS($id) . ':' . $plugin->getConf('logpage');
+    $logpage = getNS($id) . ':' . $plugin->getConf('logpage');
     if (!page_exists($logpage)) {
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
             throw new Exception($plugin->getLang('e_not_writable'));
