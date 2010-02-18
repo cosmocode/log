@@ -5,7 +5,6 @@
  * @author Adrian Lang <lang@cosmocode.de>
  */
 
-$lang['e_invalidlog'] = 'No valid data in log page found';
 $lang['e_not_writable']  = 'No sufficient rights to create or write log page';
 $lang['e_syntax'] = 'Invalid syntax';
 

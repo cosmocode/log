@@ -73,7 +73,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
             }
         }
         if ($start === -1) {
-            return $this->getLang('e_invalidlog');
+            $type = 'u';
         }
 
         return array(array_merge($instructions,
