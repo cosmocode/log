@@ -73,7 +73,7 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
         if (!isset($_SERVER['REMOTE_USER'])) {
             $log_text .= '//' . clientIP(true) . '//';
         } else {
-            if ($this->getConf('userns') !== '') {
+            if ($this->getConf('userpage') !== '') {
                 $log_text .= '[[' . sprintf($this->getConf('userpage'), $_SERVER['REMOTE_USER']) . '|' . $USERINFO['name'] . ']]';
             } else {
                 $log_text .= '//' . $USERINFO['name'] . '//';
