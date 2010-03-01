@@ -19,7 +19,17 @@ function log_get_log_page($plugin, $id) {
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
             throw new Exception($plugin->getLang('e_not_writable'));
         }
-        saveWikiText($logpage, "====== $id log ======", $plugin->getLang('created_summary'));
+
+        global $conf;
+
+        $locale = DOKU_PLUGIN . 'log/lang/' . $conf['lang'] . '/log.txt';
+        if (!file_exists($locale)) {
+            $locale = DOKU_PLUGIN . 'log/lang/en/log.txt';
+        }
+
+        saveWikiText($logpage,
+                     str_replace('@@ID@@', $id, file_get_contents($locale)),
+                     $plugin->getLang('created_summary'));
     }
     return $logpage;
 }
