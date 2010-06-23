@@ -79,10 +79,10 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
 
         return array(array_merge($instructions,
                                  array(array('listitem_open', array(1)),
-                                       array('listcontent_open'),
+                                       array('listcontent_open', array()),
                                        array('internallink', array($logpage, $this->getLang('fulllog'))),
-                                       array('listcontent_close'),
-                                       array('listitem_close'))),
+                                       array('listcontent_close', array()),
+                                       array('listitem_close', array()))),
                      $type);
     }
 
