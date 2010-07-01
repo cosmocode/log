@@ -14,6 +14,10 @@ if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
 function log_get_log_page($plugin, $id) {
+    if (strpos($id, $conf['start']) !== strlen($id) - strlen($conf['start'])) {
+        // Force log file in ns:log for ids like ns
+        $id .= ':';
+    }
     $logpage = getNS($id) . ':' . $plugin->getConf('logpage');
     if (!page_exists($logpage)) {
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
