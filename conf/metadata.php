@@ -5,6 +5,5 @@
  * @author Adrian Lang <lang@cosmocode.de>
  */
 
-
-//$meta['fixme'] = array('string');
-
+$meta['logpage'] = array('string');
+$meta['userpage']  = array('string');
