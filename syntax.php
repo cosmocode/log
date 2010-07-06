@@ -87,11 +87,6 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
     }
 
     function render($mode, &$renderer, $data) {
-        if($mode === 'metadata'){
-            $renderer->meta['relation']['logplugin'] = true;
-            return true;
-        }
-
         if($mode !== 'xhtml') return false;
 
         if (!is_array($data)) {
@@ -101,6 +96,10 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         }
 
         global $ID;
+
+        // Disable cache for the security token (it is not necessary for the
+        // log inclusion, this could be managed via metadata dependencies)
+        $R->info['cache'] = false;
 
         call_user_func(array(&$renderer, 'list' . $data[1] . '_open'));
 
