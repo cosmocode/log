@@ -21,6 +21,22 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
     function register(&$controller) {
        $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, 'handle_ajax_call_unknown');
        $controller->register_hook('ACTION_ACT_PREPROCESS', 'BEFORE', $this, 'handle_action_act_preprocess');
+       $controller->register_hook('PARSER_CACHE_USE','BEFORE', $this, 'handle_cache_prepare');
+    }
+
+    function handle_cache_prepare(&$event, $param) {
+        $cache =& $event->data;
+
+        // we're only interested in wiki pages
+        if (!isset($cache->page)) return;
+
+        // get meta data
+        if (!p_get_metadata($cache->page, 'relation logplugin')) {
+            // No log used
+            return;
+        }
+
+        $cache->depends['files'][] = wikiFN(log_get_log_page($this, $cache->page));
     }
 
     function handle_ajax_call_unknown(&$event, $param) {
