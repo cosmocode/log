@@ -59,7 +59,7 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
             return;
         }
         $text = $_POST['log_text'];
-        $log_id = log_get_log_page($this, $ID);
+        $log_id = log_get_log_page($this, $ID, true);
         if (auth_quickaclcheck($log_id) < AUTH_EDIT) {
             msg($this->getLang('e_not_writable'), -1);
         }

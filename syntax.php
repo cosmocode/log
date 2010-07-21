@@ -35,10 +35,19 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         }
         $maxcount = count($match) > 1 ? $match[1] : 5;
 
+        $empty_list = array(array('listitem_open', array(1)),
+                       array('listcontent_open', array()),
+                       array('cdata', array('Bisher ist kein Logbucheintrag verfuegbar')),
+                       array('listcontent_close', array()),
+                       array('listitem_close', array()));
+
         try {
             $logpage = log_get_log_page($this, $ID);
         } catch (Exception $e) {
             return $e->getMessage();
+        }
+        if (!page_exists($logpage)) {
+            return array($empty_list, 'u', $logpage);
         }
 
         $instructions = p_cached_instructions(wikiFN($logpage),false,$logpage);
@@ -74,7 +83,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         }
         if ($start === -1) {
             $type = 'u';
-            $instructions = array();
+            $instructions = $empty_list;
         }
 
         return array(array_merge($instructions,
@@ -83,7 +92,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
                                        array('internallink', array($logpage, $this->getLang('fulllog'))),
                                        array('listcontent_close', array()),
                                        array('listitem_close', array()))),
-                     $type);
+                     $type, $logpage);
     }
 
     function render($mode, &$renderer, $data) {
@@ -107,17 +116,18 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         global $ID;
 
         call_user_func(array(&$renderer, 'list' . $data[1] . '_open'));
+        if (auth_quickaclcheck($data[2]) >= AUTH_EDIT) {
+            call_user_func(array(&$renderer, 'listitem_open'), 1);
+            call_user_func(array(&$renderer, 'listcontent_open'));
+            $form = new Doku_Form($ID, wl($ID,array('do'=>'log_new'),false,'&'));
+            $form->addElement(form_makeTextField('log_text', '', $this->getLang('newentry'), 'log__nt', 'edit'));
+            $form->addHidden('id', $ID);
+            $form->addElement(form_makeButton('submit', null, $this->getLang('save')));
 
-        call_user_func(array(&$renderer, 'listitem_open'), 1);
-        call_user_func(array(&$renderer, 'listcontent_open'));
-        $form = new Doku_Form($ID, wl($ID,array('do'=>'log_new'),false,'&'));
-        $form->addElement(form_makeTextField('log_text', '', $this->getLang('newentry'), 'log__nt', 'edit'));
-        $form->addHidden('id', $ID);
-        $form->addElement(form_makeButton('submit', null, $this->getLang('save')));
-
-        $renderer->doc .= $form->getForm();
-        call_user_func(array(&$renderer, 'listcontent_close'));
-        call_user_func(array(&$renderer, 'listitem_close'));
+            $renderer->doc .= $form->getForm();
+            call_user_func(array(&$renderer, 'listcontent_close'));
+            call_user_func(array(&$renderer, 'listitem_close'));
+        }
 
         foreach ($data[0] as $instruction ) {
             // Execute the callback against the Renderer

@@ -13,13 +13,16 @@ if (!defined('DOKU_LF')) define('DOKU_LF', "\n");
 if (!defined('DOKU_TAB')) define('DOKU_TAB', "\t");
 if (!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 
-function log_get_log_page($plugin, $id) {
+function log_get_log_page($plugin, $id, $needspage = false) {
     if (strpos($id, $conf['start']) !== strlen($id) - strlen($conf['start'])) {
         // Force log file in ns:log for ids like ns
         $id .= ':';
     }
     $logpage = getNS($id) . ':' . $plugin->getConf('logpage');
     if (!page_exists($logpage)) {
+        if (!$needspage) {
+            return $logpage;
+        }
         if (auth_quickaclcheck($logpage) < AUTH_CREATE) {
             throw new Exception($plugin->getLang('e_not_writable'));
         }
