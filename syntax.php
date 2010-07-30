@@ -111,7 +111,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
 
         // Disable cache for the security token (it is not necessary for the
         // log inclusion, this is managed via metadata dependencies)
-        $R->info['cache'] = false;
+        $renderer->info['cache'] = false;
 
         global $ID;
 
