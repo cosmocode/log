@@ -35,8 +35,12 @@ function log_get_log_page($plugin, $id, $needspage = false) {
             $locale = DOKU_PLUGIN . 'log/lang/en/log.txt';
         }
 
+        $caption = useHeading('content') ? p_get_first_heading($id,true) : $id;
+
         saveWikiText($logpage,
-                     str_replace('@@ID@@', $id, file_get_contents($locale)),
+                     str_replace(array('@@CAPTION@@', '@@ID@@'),
+                                 array($caption, $id),
+                                 file_get_contents($locale)),
                      $plugin->getLang('created_summary'));
     }
     return $logpage;

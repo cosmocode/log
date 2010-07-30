@@ -1,2 +1,2 @@
-====== Log für @@ID@@ ======
+====== Log für @@CAPTION@@ ======
 Log für [[@@ID@@]]:
