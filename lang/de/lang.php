@@ -13,3 +13,4 @@ $lang['newentry'] = 'Neuer Eintrag:';
 $lang['fulllog'] = 'Vollständiges Log anzeigen';
 $lang['summary'] = 'Neuer Logeintrag';
 $lang['created_summary'] = 'Neues Log angelegt';
+$lang['no_entry'] = 'Bisher wurden keine Einträge angelegt';

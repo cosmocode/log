@@ -37,7 +37,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
 
         $empty_list = array(array('listitem_open', array(1)),
                        array('listcontent_open', array()),
-                       array('cdata', array('Bisher ist kein Logbucheintrag verfuegbar')),
+                       array('cdata', array($this->getLang('no_entry'))),
                        array('listcontent_close', array()),
                        array('listitem_close', array()));
 
