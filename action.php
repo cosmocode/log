@@ -69,7 +69,7 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
             $str = array($log_text, "\n  * ", '');
         }
         list($pre, $lstart, $post) = $str;
-        $log_text = $pre . $lstart . dformat();
+        $log_text = $pre . $lstart . dformat() . ' ';
         if (!isset($_SERVER['REMOTE_USER'])) {
             $log_text .= '//' . clientIP(true) . '//';
         } else {
