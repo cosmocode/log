@@ -83,7 +83,13 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
         if ($post !== '') {
             $log_text .= $lstart . $post;
         }
+
+        // save the log page (reset ID to avoid problems with plugins that
+        // intercept IO_WIKIPAGE_WRITE but rely on $ID
+        $oldid = $ID;
+        $ID = $log_id;
         saveWikiText($log_id, $log_text, $this->getLang('summary'));
+        $ID = $oldid;
     }
 }
 
