@@ -57,6 +57,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         $start = -1;
         $end = -1;
         $lvl = 0;
+        $cnt = $maxcount;
 
         // build a lookup table
         for($i=0; $i<$max; $i++){
@@ -69,7 +70,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
                 ++$lvl;
                 break;
             case 'listitem_close':
-                if ($lvl === 1 && --$maxcount === 0) {
+                if ($lvl === 1 && --$cnt === 0) {
                     $instructions = array_slice($instructions, $start, $i - $start + 1);
                     break 2;
                 }
@@ -92,7 +93,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
                                        array('internallink', array($logpage, $this->getLang('fulllog'))),
                                        array('listcontent_close', array()),
                                        array('listitem_close', array()))),
-                     $type, $logpage);
+                     $type, $logpage, $maxcount);
     }
 
     function render($mode, &$renderer, $data) {
@@ -119,9 +120,11 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         if (auth_quickaclcheck($data[2]) >= AUTH_EDIT) {
             call_user_func(array(&$renderer, 'listitem_open'), 1);
             call_user_func(array(&$renderer, 'listcontent_open'));
-            $form = new Doku_Form($ID, wl($ID,array('do'=>'log_new'),false,'&'));
-            $form->addElement(form_makeTextField('log_text', '', $this->getLang('newentry'), 'log__nt', 'edit'));
+            $form = new Doku_Form(array('action' => wl($ID,array('do'=>'log_new')),
+                                        'class' => 'plugin_log'));
+            $form->addElement(form_makeTextField('log_text', '', $this->getLang('newentry')));
             $form->addHidden('id', $ID);
+            $form->addHidden('maxcount', $data[3]);
             $form->addElement(form_makeButton('submit', null, $this->getLang('save')));
 
             $renderer->doc .= $form->getForm();

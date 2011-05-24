@@ -45,3 +45,43 @@ function log_get_log_page($plugin, $id, $needspage = false) {
     }
     return $logpage;
 }
+
+function log_add_log_entry($plugin) {
+    global $ID;
+    global $USERINFO;
+    if (!checkSecurityToken() || !isset($_POST['log_text'])) {
+        return;
+    }
+    $text = $_POST['log_text'];
+    $log_id = log_get_log_page($plugin, $ID, true);
+    if (auth_quickaclcheck($log_id) < AUTH_EDIT) {
+        throw new Exception($plugin->getLang('e_not_writable'));
+    }
+    $log_text = rawWiki($log_id);
+    $str = preg_split('/(\n {2,}[-*] *)/', $log_text, 2, PREG_SPLIT_DELIM_CAPTURE);
+    if (count($str) === 1) {
+        $str = array($log_text, "\n  * ", '');
+    }
+    list($pre, $lstart, $post) = $str;
+    $log_text = $pre . $lstart . dformat() . ' ';
+    if (!isset($_SERVER['REMOTE_USER'])) {
+        $log_text .= '//' . clientIP(true) . '//';
+    } else {
+        if ($plugin->getConf('userpage') !== '') {
+            $log_text .= '[[' . sprintf($plugin->getConf('userpage'), $_SERVER['REMOTE_USER']) . '|' . $USERINFO['name'] . ']]';
+        } else {
+            $log_text .= '//' . $USERINFO['name'] . '//';
+        }
+    }
+    $log_text .= ': ' . $text;
+    if ($post !== '') {
+        $log_text .= $lstart . $post;
+    }
+
+    // save the log page (reset ID to avoid problems with plugins that
+    // intercept IO_WIKIPAGE_WRITE but rely on $ID
+    $oldid = $ID;
+    $ID = $log_id;
+    saveWikiText($log_id, $log_text, $plugin->getLang('summary'));
+    $ID = $oldid;
+}
