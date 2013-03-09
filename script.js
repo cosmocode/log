@@ -1,50 +1,46 @@
-addInitEvent(function () {
-    if (typeof doku_ajax === 'undefined') {
-        return;
-    }
+jQuery(function() {
 
-    var forms = getElementsByClass('plugin_log', document, 'form');
+    var forms = jQuery('.plugin_log');
 
     if (forms.length === 0) {
         return;
     }
 
-    function handleEvent(form) {
+    function handleEvent( form ) {
          var loading;
-         var ajax = new doku_ajax('plugin_log', form);
-         ajax.onCompletion = function () {
-             if (this.responseStatus[0] !== 200) {
-                 alert(this.response);
-                 loading.parentNode.removeChild(loading);
-                 return;
-             }
-             var list = form;
-             do {
-                 list = list.parentNode;
-             } while (list && {'ul': 1, 'ol': 1}[list.tagName.toLowerCase()] !== 1);
-             var p = list.parentNode;
-             var n = document.createElement('div');
-             n.innerHTML = this.response;
-             p.replaceChild(n.firstChild, list);
-             var new_form = getElementsByClass('plugin_log', p, 'form')[0];
-             addEvent(getElementsByClass('button', new_form, 'input')[0],
-                      'click', bind(handleEvent, new_form));
-
-         };
-
-         ajax.runAJAX();
-         loading = document.createElement('img');
-         loading.src = DOKU_BASE+'lib/images/throbber.gif';
-         loading.alt = '...';
-         loading.className = 'load';
-         loading.style.marginBottom = '-5px';
-         form.appendChild(loading);
-         return false;
+         var ajax = new jQuery.ajax({
+			'type': 'post',
+			'url': form.action,
+			'data': jQuery( form ).serialize(),
+			'success': function( data ){
+				var listitem = jQuery( data ).find( '#dokuwiki__content ul li:eq(1)' );
+				jQuery( form )
+					.parents( 'li' )
+					.after( listitem )
+					.find( '.edit' ).val( '' );
+				
+				loading && loading.remove() 
+			},
+			'error': function(){
+				alert(this.response);
+				loading.remove();
+			}
+		 })
+         loading = jQuery('<img/>', {
+			'src': DOKU_BASE+'lib/images/throbber.gif',
+			'alt': '...',
+			'class': 'load',
+			'css': {
+				'margin-bottom': '-5px'
+			}
+		 }).appendTo( form )
      }
 
-
-    for (var form in forms) {
-        addEvent(getElementsByClass('button', forms[form], 'input')[0],
-                 'click', bind(handleEvent, forms[form]));
-    }
+	jQuery( forms ).each(function(idx, el){
+		var el = el;
+		jQuery( el ).find( '.button' ).click(function(e){
+			e.preventDefault();
+			handleEvent( el );
+		})
+	})
 });
