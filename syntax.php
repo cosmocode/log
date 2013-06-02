@@ -120,7 +120,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         if (auth_quickaclcheck($data[2]) >= AUTH_EDIT) {
             call_user_func(array(&$renderer, 'listitem_open'), 1);
             call_user_func(array(&$renderer, 'listcontent_open'));
-            $form = new Doku_Form(array('action' => wl($ID,array('do'=>'log_new')),
+            $form = new Doku_Form(array('action' => wl($ID,array('do'=>'log_new'), false, '&'),
                                         'class' => 'plugin_log'));
             $form->addElement(form_makeTextField('log_text', '', $this->getLang('newentry')));
             $form->addHidden('id', $ID);
