@@ -25,7 +25,7 @@ jQuery(function() {
 				alert(this.response);
 				loading.remove();
 			}
-		 })
+		 });
          loading = jQuery('<img/>', {
 			'src': DOKU_BASE+'lib/images/throbber.gif',
 			'alt': '...',
