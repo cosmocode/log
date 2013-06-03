@@ -13,9 +13,11 @@ jQuery(function() {
 			'url': form.action,
 			'data': jQuery( form ).serialize(),
 			'success': function( data ){
-				var listitem = jQuery(data).find('.dokuwiki form.plugin_log').parents('ul').find('li:eq(1)');
+                var rootTag = jQuery('<root>');
+                jQuery(data).appendTo(rootTag);
+                var listitem = rootTag.find('.dokuwiki form.plugin_log').parents('ul').find('li:eq(1)');
 
-				jQuery( form )
+                jQuery( form )
 					.parents( 'li' )
 					.after( listitem )
 					.find( '.edit' ).val( '' );
