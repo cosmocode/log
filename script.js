@@ -13,7 +13,7 @@ jQuery(function() {
 			'url': form.action,
 			'data': jQuery( form ).serialize(),
 			'success': function( data ){
-				var listitem = jQuery( data ).find( '#dokuwiki__content ul li:eq(1)' );
+				var listitem = jQuery( data ).find( '.dokuwiki ul li.level1:eq(1)' );
 				jQuery( form )
 					.parents( 'li' )
 					.after( listitem )
