@@ -27,7 +27,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
         $this->Lexer->addSpecialPattern('{{log(?:>[^}]+)?}}',$mode,'plugin_log');
     }
 
-    function handle($match, $state, $pos, &$handler){
+    function handle($match, $state, $pos, Doku_Handler $handler){
         global $ID;
 
         if (preg_match('/{{log(?:>(\d+))?}}/', $match, $match) === 0) {
@@ -96,7 +96,7 @@ class syntax_plugin_log extends DokuWiki_Syntax_Plugin {
                      $type, $logpage, $maxcount);
     }
 
-    function render($mode, &$renderer, $data) {
+    function render($mode, Doku_Renderer $renderer, $data) {
         if($mode === 'metadata'){
             $renderer->meta['relation']['logplugin'] = true;
             return true;
