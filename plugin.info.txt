@@ -1,7 +1,7 @@
 base   log
 author Adrian Lang
 email  dokuwiki@cosmocode.de
-date   2016-02-03
+date   2016-07-06
 name   log plugin
 desc   Provide simple logs
 url    http://www.dokuwiki.org/plugin:log
