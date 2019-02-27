@@ -42,7 +42,6 @@ class action_plugin_log extends DokuWiki_Action_Plugin {
         if ($event->data !== 'log_new') {
             return;
         }
-        $event->preventDefault();
         $this->handle();
         global $ACT;
         $ACT = 'show';
